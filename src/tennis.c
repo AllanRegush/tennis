@@ -21,8 +21,14 @@ typedef struct Ball {
   Vec2D deltaVec;
 } Ball;
 
+typedef struct Paddle {
+  Vec2D vec;
+  Vec2D dVec;
+} Paddle;
+
 
 static Ball ball;
+static Paddle paddle1;
 static bool quit;
 
 Window window;
@@ -48,6 +54,8 @@ bool init() {
     }
     ball.deltaVec.x = 2;
     ball.deltaVec.y = 1;
+    paddle1.vec.x = 10;
+    paddle1.vec.y = 10;
   }
   return success;
 }
@@ -70,9 +78,17 @@ void update() {
   ball.vec.y += ball.deltaVec.y;
 }
 
-void render() {
-  SDL_SetRenderDrawColor(window.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-  SDL_RenderClear(window.renderer);
+void drawPaddle() {
+  SDL_Rect rect;
+  rect.x = paddle1.vec.x;
+  rect.y = paddle1.vec.y;
+  rect.w = 10;
+  rect.h = 40;
+  SDL_SetRenderDrawColor(window.renderer, 0xFF, 0x00, 0x00, 0xFF);
+  SDL_RenderFillRect(window.renderer, &rect);
+}
+
+void drawBall() {
   SDL_Rect rect;
   rect.x = ball.vec.x;
   rect.y = ball.vec.y;
@@ -80,10 +96,13 @@ void render() {
   rect.h = 10;
   SDL_SetRenderDrawColor(window.renderer, 0xFF, 0x00, 0x00, 0xFF);
   SDL_RenderFillRect(window.renderer, &rect);
-  //SDL_RenderDrawRect(window.renderer, &rect);
-  //SDL_Rect fillRect = { SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
-  //SDL_SetRenderDrawColor(window.renderer, 0xFF, 0x00, 0x00, 0xFF );        
-  //SDL_RenderFillRect(window.renderer, &fillRect );
+}
+
+void render() {
+  SDL_SetRenderDrawColor(window.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+  SDL_RenderClear(window.renderer);
+  drawBall();
+  drawPaddle();
   SDL_RenderPresent(window.renderer);
 }
   
